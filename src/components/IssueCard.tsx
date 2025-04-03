@@ -19,6 +19,7 @@ export default function IssueCard({ issue }: IssueCardProps) {
       key={issue.id}
       style={{
         background: "#172085",
+        border: "none",
         cursor: "grab",
         marginBottom: 5,
         ...dragStyle,

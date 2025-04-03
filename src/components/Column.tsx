@@ -13,7 +13,7 @@ export default function Column({ title, issues }: ColumnProps) {
         padding: 10,
         background: "#3480eb",
         borderRadius: 10,
-        margin: 2,
+        margin: 10,
         flex: 1,
       }}
       ref={setNodeRef}

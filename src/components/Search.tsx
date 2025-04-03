@@ -20,7 +20,7 @@ export default function Search() {
   };
 
   return (
-    <Flex gap="small">
+    <Flex gap="small" style={{ padding: 10, paddingBottom: 0 }}>
       <Input
         placeholder="Enter repo URL"
         value={repoUrl}
