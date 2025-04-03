@@ -1,31 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Issue, IssuesState } from "../utils/types";
-
-// Rebuild IssuesState
-// interface IssuesState {
-//   isLoading: boolean;
-//   columns: {
-//     ToDo: Issue[];
-//     InProgress: Issue[];
-//     Done: Issue[];
-//   };
-// }
-
-// const initialState: IssuesState = {
-//   isLoading: false,
-//   columns: {
-//     ToDo: [],
-//     InProgress: [],
-//     Done: [],
-//   },
-// };
-// Rebuild IssuesState
-
-const initialState: IssuesState = {
-  isLoading: false,
-  data: [],
-};
+import { IssuesState, moveIssueProps } from "../utils/types";
 
 export const fetchIssues = createAsyncThunk(
   "issues/fetchIssues",
@@ -44,11 +19,21 @@ export const fetchIssues = createAsyncThunk(
   }
 );
 
+const initialState: IssuesState = {
+  isLoading: false,
+  data: [],
+};
+
 const issuesSlice = createSlice({
   name: "issues",
   initialState,
   reducers: {
-    // moveIssue: there should be function for drag&drop here in future
+    moveIssue(State, action: PayloadAction<moveIssueProps>) {
+      const { issueId, state, assignee } = action.payload;
+      State.data = State.data.map((issue) =>
+        issue.id === issueId ? { ...issue, state, assignee } : issue
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -59,21 +44,6 @@ const issuesSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload;
       })
-      // .addCase(
-      //   fetchIssues.fulfilled,
-      //   (state, action: PayloadAction<Issue[]>) => {
-      //     state.isLoading = false;
-      //     state.columns.ToDo = action.payload
-      //       .filter((issue) => issue.state === "open" && !issue.assignee)
-      //       .map((issue) => issue);
-      //     state.columns.InProgress = action.payload
-      //       .filter((issue) => issue.state === "open" && issue.assignee)
-      //       .map((issue) => issue);
-      //     state.columns.Done = action.payload
-      //       .filter((issue) => issue.state === "closed")
-      //       .map((issue) => issue);
-      //   }
-      // )
       .addCase(fetchIssues.rejected, (state, action) => {
         state.isLoading = false;
         console.error(action.error.message);
@@ -82,3 +52,4 @@ const issuesSlice = createSlice({
 });
 
 export default issuesSlice.reducer;
+export const { moveIssue } = issuesSlice.actions;

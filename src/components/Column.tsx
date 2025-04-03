@@ -1,32 +1,31 @@
-import { Card, Col, Divider, Typography } from "antd";
-import { Issue } from "../utils/types";
+import { Col, Typography } from "antd";
+import { ColumnProps } from "../utils/types";
+import { useDroppable } from "@dnd-kit/core";
+import IssueCard from "./IssueCard";
 
-export default function Column({
-  title,
-  issues,
-}: {
-  title: string;
-  issues: Issue[];
-}) {
+export default function Column({ title, issues }: ColumnProps) {
+  const { setNodeRef } = useDroppable({ id: title });
+
   return (
-    <Col span={8} style={{ margin: "0" }}>
+    <Col
+      span={8}
+      style={{
+        padding: 10,
+        background: "#3480eb",
+        borderRadius: 10,
+        margin: 2,
+        flex: 1,
+      }}
+      ref={setNodeRef}
+    >
       <Typography.Title
         level={4}
-        style={{ margin: 0, textAlign: "center", background: "white" }}
+        style={{ margin: 2, textAlign: "center", background: "inherit" }}
       >
         {title}
       </Typography.Title>
       {issues.map((issue) => (
-        <Card
-          key={issue.id}
-          style={{ background: "#172085", margin: "5px 10px" }}
-        >
-          <a href={issue.html_url} target="_blank" rel="noopener noreferrer">
-            {issue.title}
-          </a>
-          <p>Added by {issue.user.login}</p>
-          <h3>Status: {issue.state}</h3>
-        </Card>
+        <IssueCard issue={issue} key={issue.id} />
       ))}
     </Col>
   );

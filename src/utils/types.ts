@@ -9,17 +9,27 @@ export interface Issue {
   html_url: string;
 }
 
-// export interface IssuesState {
-//   isLoading: boolean;
-//   columns: {
-//     ToDo: Issue[];
-//     InProgress: Issue[];
-//     Done: Issue[];
-//   };
-// }
-
 export interface IssuesState {
   isLoading: boolean;
   data: Issue[];
-  // columns: "ToDo" | "In Progress" | "Done";
+}
+
+export interface ColumnType {
+  title: string;
+  columnIssues: Issue[];
+}
+
+export interface ColumnProps {
+  title: string;
+  issues: Issue[];
+}
+
+export interface IssueCardProps {
+  issue: Issue;
+}
+
+export interface moveIssueProps {
+  issueId: number;
+  state: "open" | "closed";
+  assignee: string | null;
 }
